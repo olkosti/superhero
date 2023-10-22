@@ -30,7 +30,7 @@ const info = [
     "info": "Пожалуй, самый популярный современный супергерой. У него много общего с мрачной птицей ночи Бэтменом: оба потеряли родителей в детстве, стали борцами с преступностью без особых сверхсил, невероятно богатые. Только если Бэтменом восхищаются, то Тони Старка — обожают :) То ли дело в шикарной актерской игре Роберта Дауни мл., который выбил роль у Николаса Кейджа и Тома Круза, то ли в хорошо прописанном персонаже. Прототипом для героя послужили Илон Маск и изобретатель Говард Хьюз. Железный Человек не всегда ходил в красном модном костюме: в своих первых версиях 1963 года он был скромного серого цвета. Увы, в киновоплощении бронекостюм даже не из металла — его делали из пластика и стекловолокна."
     },
     {
-    "name": "Спайдер-мен/Человек-паук",
+    "name": "Спайдер-мен / Человек-паук",
     "universe": "Marvel Comics",
     "alterego": "Питер Паркер",
     "occupation": "борец за справедливость, студент, фотограф",
@@ -107,7 +107,7 @@ console.log(infoObj);
 
 const root = document.querySelector('.root');
 class Superhero {
-    constructor(name, universe, alterego, occupation, friends, superpowers, url, info) {
+    constructor(name, universe, alterego, occupation, friends, superpowers, url, info, icon) {
         this.name = name;
         this.universe = universe;
         this.alterego = alterego;
@@ -115,24 +115,37 @@ class Superhero {
         this.friends = friends;
         this.superpowers = superpowers;
         this.url = url;
-        // this.info = info;
+        this.icon = icon;
+        this.info = info;
     }
 
     createCard() {
         const card = document.createElement('div');
         card.classList.add('superhero__card');
 
+        //добавляем оболочку для заголовка и иконки
+        
+        //добавляем заголовок - имя героя
         const superheroName = document.createElement('h2');
-        superheroName.classList.add('superhero__title');
+        superheroName.classList.add('superhero__name');
         superheroName.textContent = this.name;
         card.appendChild(superheroName);
+        //добавляем иконку
+        const superheroLink = document.createElement('a');
+        superheroLink.href ='#';
+        const superheroIcon = document.createElement('img');
+        superheroIcon.src = 'assets/icon/info.png';
+        superheroIcon.alt = 'инфо';
+        superheroIcon.classList.add('superhero__icon');
+        card.appendChild(superheroLink);
+        superheroLink.appendChild(superheroIcon);
 
+        //добавляем информацию о супергерое
         const superheroInfoAll = document.createElement('div');
         superheroInfoAll.classList.add('superhero__info');
         card.appendChild(superheroInfoAll);
 
         const superheroUniverse = document.createElement('p');
-        // superheroUniverse.classList.add('superhero__universe')
         superheroUniverse.textContent = `Вселенная: ${this.universe}`;
         superheroInfoAll.appendChild(superheroUniverse);
 
@@ -152,6 +165,7 @@ class Superhero {
         superheroSuperpowers.textContent = `Суперсилы: ${this.superpowers}`;
         superheroInfoAll.appendChild(superheroSuperpowers);
 
+        //добавляем картинку  
         const superheroImages = document.createElement('img');
         superheroImages.classList.add('superhero__images');
         superheroImages.src = this.url;
@@ -177,4 +191,5 @@ for (let i = 0; i < infoObj.length; i++) {
     const card = superhero.createCard();
     root.appendChild(card);
 }
+
 

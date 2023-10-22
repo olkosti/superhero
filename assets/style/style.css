@@ -1,0 +1,47 @@
+* {
+    font-family: 'Comic Neue', cursive;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    text-align: center;
+    font-size: 44px;
+}
+.root {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.superhero__card {
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 4px double black;
+    border-radius: 5%;
+    margin: 30px 0px 0px 30px;
+    padding: 20px;
+    
+}
+.superhero__title {
+    margin-bottom: 30px;
+}
+.superhero__info {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    min-height: 350px;
+}
+.superhero__info p {
+    margin-bottom: 10px;
+}
+
+.superhero__images {
+max-width: 400px;
+height: 250px;
+overflow: hidden;
+}
+
+.superhero__images img {
+    width: 100%;
+}

@@ -103,9 +103,14 @@ const info = [
 
 const infoJSON = JSON.stringify(info);
 const infoObj = JSON.parse(infoJSON);
-console.log(infoObj);
 
+const body = document.querySelector('body');
 const root = document.querySelector('.root');
+const popupLinks = document.querySelectorAll('.superhero__icon');
+const popup = document.getElementById('popup');
+const popupContent = document.querySelector('.popup__content');
+const closeButtons = document.querySelectorAll('.popup__close');
+
 class Superhero {
     constructor(name, universe, alterego, occupation, friends, superpowers, url, info, icon) {
         this.name = name;
@@ -115,8 +120,8 @@ class Superhero {
         this.friends = friends;
         this.superpowers = superpowers;
         this.url = url;
-        this.icon = icon;
         this.info = info;
+        this.icon = icon;        
     }
 
     createCard() {
@@ -130,13 +135,15 @@ class Superhero {
         superheroName.classList.add('superhero__name');
         superheroName.textContent = this.name;
         card.appendChild(superheroName);
+
         //добавляем иконку
         const superheroLink = document.createElement('a');
         superheroLink.href ='#';
+        superheroLink.classList.add('superhero__icon');
         const superheroIcon = document.createElement('img');
         superheroIcon.src = 'assets/icon/info.png';
         superheroIcon.alt = 'инфо';
-        superheroIcon.classList.add('superhero__icon');
+        // superheroIcon.classList.add('superhero__icon');
         card.appendChild(superheroLink);
         superheroLink.appendChild(superheroIcon);
 
@@ -165,12 +172,35 @@ class Superhero {
         superheroSuperpowers.textContent = `Суперсилы: ${this.superpowers}`;
         superheroInfoAll.appendChild(superheroSuperpowers);
 
+        //добавляем подробное инфо в модальное окно
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+        body.appendChild(popup);
+
+        const popupBody = document.createElement('div');
+        popupBody.classList.add('popup__body');
+        popup.appendChild(popupBody);
+
+        const popupContent = document.createElement('div');
+        popupContent.classList.add('popup__content');
+        popupBody.appendChild(popupContent);
+
+        const popupClose = document.createElement('a');
+        popupClose.href = '#';
+        popupClose.classList.add('popup__close');
+        popupClose.textContent = 'X'
+        const superheroInfo = document.createElement('p');
+        superheroInfo.classList.add('popup__text');
+        superheroInfo.textContent = this.info;
+        popupContent.appendChild(superheroInfo);
+        popupContent.appendChild(popupClose);
+
         //добавляем картинку  
         const superheroImages = document.createElement('img');
         superheroImages.classList.add('superhero__images');
         superheroImages.src = this.url;
         superheroImages.alt = this.name;
-        card.appendChild(superheroImages);
+        card.appendChild(superheroImages);        
 
         return card;
     }
@@ -185,11 +215,129 @@ for (let i = 0; i < infoObj.length; i++) {
         info[i].friends,
         info[i].superpowers,
         info[i].url,
-        info[i].info
+        info[i].info,
+        info[i].icon
     );
     
     const card = superhero.createCard();
     root.appendChild(card);
 }
 
+//Модальное окно
+    for (let i = 0; i < popupLinks.length; i++) {
+        const popupLink = popupLinks[i];
+        popupLink.addEventListener('click', function (){
+            popup.style.display = 'block';
+        });
+        
+    } 
 
+    for (let i = 0; i < closeButtons.length; i++) {
+        const closeButton = closeButtons[i];
+        closeButton.addEventListener('click', function () {
+            popup.style.display = 'none';
+    });
+    }
+
+// popupLinks.forEach(link => {
+    //     link.addEventListener('click', () => {
+    //         popup.style.display = 'block';
+    //     });
+    // });
+
+
+// //Открытие и закрытие модального окна (не работает)
+
+// const popupLinks = document.querySelectorAll('.superhero__icon');
+// console.log(popupLinks);
+// const body = document.querySelector('body');
+// const lockPadding = document.querySelectorAll('.lock-padding')
+
+// let unlock = true;
+
+// const timeout = 800;
+
+// if (popupLinks.length > 0) {
+//     for (let i = 0; i < popupLinks.length; i++) {
+//         const popupLink = popupLinks[i];
+//         popupLink.addEventListener('click', function (e) {
+//             const popupName = popupLink.getAttribute('href').replace('#', '');
+//             const curentPopup = document.getElementById(popupName);
+//             popupOpen(curentPopup);
+//             e.preventDefault();
+//         });
+//     }
+// }
+
+// const popupCloseIcon = document.querySelectorAll('.close-popup');
+// if (popupCloseIcon.length > 0) {
+//     for (let i = 0; i < popupCloseIcon.length; i++) {
+//         const el = popupCloseIcon[i];
+//         el.addEventListener('click', function (e) {
+//             popupClose(el.closest('.popup'));
+//             e.preventDefault();
+//         });
+//     }
+// }
+
+// function popupOpen(curentPopup) {
+//     if (curentPopup && unlock) {
+//         const popupActive = document.querySelector('.popup.open');
+//         if (popupActive) {
+//             popupClose(popupActive, false);
+//         } else {
+//             bodyLock(); 
+//         }
+//         curentPopup.classList.add('open');
+//         curentPopup.addEventListener('click', function (e) {
+//             if (!e.target.closest('.popup__content')) {
+//                 popupClose(e.target.closest('.popup'));
+//             }
+//         });
+//     }
+// } 
+
+// function popupClose(popupActive, doUnLock = true) {
+//     if (unlock) {
+//         popupActive.classList.remove('open');
+//         if (doUnLock) {
+//             bodyUnLock(); 
+//         }
+//     }
+// }
+
+// function bodyLock() {
+//     const lockPaddingValue = window.innerWidth - document.querySelector('.root').offsetWidth + 'px';
+
+//     if (lockPadding.length > 0) {
+//         for (let i = 0; i < lockPadding.length; i++) {
+//             const el = lockPadding[i];
+//             el.style.paddingRight = lockPaddingValue;
+//         }
+//     }
+//     body.style.paddingRight = lockPaddingValue;
+//     body.classList.add('lock');
+
+//     unlock = false;
+//     setTimeout(function () {
+//         unlock = true;
+//     }, timeout);
+// }
+
+// function bodyUnLock() {
+//     setTimeout(function () {
+//         if (lockPadding.length > 0) {
+//             for (let i = 0; i < lockPadding.length; i++) {
+//                 const el = lockPadding[i];
+//                 el.style.paddingRight = '0px';
+//             }
+//         }
+//         body.style.paddingRight = '0px';
+//         body.classList.remove('lock');
+//     }, timeout);
+
+//     unlock = false;
+//     setTimeout(function () {
+//         unlock = true;
+//     }, timeout);
+// }

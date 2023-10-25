@@ -127,8 +127,6 @@ class Superhero {
     createCard() {
         const card = document.createElement('div');
         card.classList.add('superhero__card');
-
-        //добавляем оболочку для заголовка и иконки
         
         //добавляем заголовок - имя героя
         const superheroName = document.createElement('h2');
@@ -200,7 +198,30 @@ class Superhero {
         superheroImages.classList.add('superhero__images');
         superheroImages.src = this.url;
         superheroImages.alt = this.name;
-        card.appendChild(superheroImages);        
+        card.appendChild(superheroImages); 
+        
+        //создаем блок звездный рейтинг
+        const rating = document.createElement('div');
+        rating.classList = 'rating';
+        const ratingStar0 = document.createElement('div');
+        ratingStar0.classList = 'rating__star';
+        const ratingStar1 = ratingStar0.cloneNode(true);
+        const ratingStar2= ratingStar0.cloneNode(true);
+        const ratingStar3 = ratingStar0.cloneNode(true);
+        const ratingStar4 = ratingStar0.cloneNode(true);
+    
+        ratingStar0.setAttribute('value', '1');
+        ratingStar1.setAttribute('value', '2');
+        ratingStar2.setAttribute('value', '3');
+        ratingStar3.setAttribute('value', '4');
+        ratingStar4.setAttribute('value', '5');
+        
+        rating.appendChild(ratingStar0);
+        rating.appendChild(ratingStar1);
+        rating.appendChild(ratingStar2);
+        rating.appendChild(ratingStar3);
+        rating.appendChild(ratingStar4);
+        card.appendChild(rating);
 
         return card;
     }
@@ -244,6 +265,14 @@ for (let i = 0; i < infoObj.length; i++) {
     //         popup.style.display = 'block';
     //     });
     // });
+
+
+
+
+
+
+
+
 
 
 // //Открытие и закрытие модального окна (не работает)

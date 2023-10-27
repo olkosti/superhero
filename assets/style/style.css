@@ -50,7 +50,8 @@ h1 {
     font-size: 18px;
     font-weight: 400;
     text-align: center;
-    min-height: 330px;
+    margin-bottom: 20px;
+    flex: 1 1 auto;
 }
 .superhero__info p {
     margin-bottom: 10px;
@@ -59,7 +60,7 @@ h1 {
 .superhero__images {
 max-width: 350px;
 height: 250px;
-overflow: hidden;
+object-fit: cover;
 }
 
 .superhero__images img {

@@ -1,4 +1,4 @@
-const info = [
+const info = `[
     {
     "name": "Бетмен",
     "universe": "DC Comics",
@@ -99,37 +99,23 @@ const info = [
     "url": "https://n1s1.hsmedia.ru/34/93/39/3493392c94fc2ae0552ef9c7e87f2617/728x382_1_cc2a743fd686b7b2e256c062966bb465@1034x543_0xac120002_2692921231540468872.jpg",
     "info": "Как и Росомаха из Людей Икс, Дэдпул был подвергнут опытам по программе «Оружие Икс». Ученые попытались исцелить его рак, привив его клеткам способность к регенерации. Как и всегда в комиксах, что-то пошло не так, и Дэдпул остался изуродованным и психически нестабильным. Это единственный супергерой из списка, который однозначно не на стороне добра. Дэдпул наслаждается насилием. Первоначально появившись в основной Вселенной Marvel, он получил альтернативные варианты в других реальностях Мультивселенной. Что оставалось неизменным — его циничное, чёрное чувство юмора: за него Дэдпула прозвали «Болтливым наёмником»"
     }
-];
+]`;
 
-const infoJSON = JSON.stringify(info);
-const infoObj = JSON.parse(infoJSON);
+const heroes = JSON.parse(info);
 
 const body = document.querySelector('body');
 const root = document.querySelector('.root');
 
 
-
-class Superhero {
-    constructor(name, universe, alterego, occupation, friends, superpowers, url, info, icon) {
-        this.name = name;
-        this.universe = universe;
-        this.alterego = alterego;
-        this.occupation = occupation;
-        this.friends = friends;
-        this.superpowers = superpowers;
-        this.url = url;
-        this.info = info;
-        this.icon = icon;        
-    }
-
-    createCard() {
+document.addEventListener("DOMContentLoaded", function(event) {
+    heroes.forEach((hero) => {
         const card = document.createElement('div');
         card.classList.add('superhero__card');
         
         //добавляем заголовок - имя героя
         const superheroName = document.createElement('h2');
         superheroName.classList.add('superhero__name');
-        superheroName.textContent = this.name;
+        superheroName.textContent = hero.name;
         card.appendChild(superheroName);
 
         //добавляем иконку
@@ -148,30 +134,30 @@ class Superhero {
         card.appendChild(superheroInfoAll);
 
         const superheroUniverse = document.createElement('p');
-        superheroUniverse.textContent = `Вселенная: ${this.universe}`;
+        superheroUniverse.textContent = `Вселенная: ${hero.universe}`;
         superheroInfoAll.appendChild(superheroUniverse);
 
         const superheroAlterego = document.createElement('p');
-        superheroAlterego.textContent = `Альтер эго: ${this.alterego}`;
+        superheroAlterego.textContent = `Альтер эго: ${hero.alterego}`;
         superheroInfoAll.appendChild(superheroAlterego);
 
         const superheroOccupation = document.createElement('p');
-        superheroOccupation.textContent = `Род деятельности: ${this.occupation}`;
+        superheroOccupation.textContent = `Род деятельности: ${hero.occupation}`;
         superheroInfoAll.appendChild(superheroOccupation);
 
         const superheroFriends = document.createElement('p');
-        superheroFriends.textContent = `Друзья: ${this.friends}`;
+        superheroFriends.textContent = `Друзья: ${hero.friends}`;
         superheroInfoAll.appendChild(superheroFriends);
 
         const superheroSuperpowers = document.createElement('p');
-        superheroSuperpowers.textContent = `Суперсилы: ${this.superpowers}`;
+        superheroSuperpowers.textContent = `Суперсилы: ${hero.superpowers}`;
         superheroInfoAll.appendChild(superheroSuperpowers);
 
         //добавляем картинку  
         const superheroImages = document.createElement('img');
         superheroImages.classList.add('superhero__images');
-        superheroImages.src = this.url;
-        superheroImages.alt = this.name;
+        superheroImages.src = hero.url;
+        superheroImages.alt = hero.name;
         card.appendChild(superheroImages); 
         
         //создаем блок звездный рейтинг
@@ -217,69 +203,161 @@ class Superhero {
 
         const superheroInfo = document.createElement('p');
         superheroInfo.classList.add('popup__text');
-        superheroInfo.textContent = this.info;
+        superheroInfo.textContent = hero.info;
 
         const popupTitle = document.createElement('h5');
         popupTitle.classList.add('popup__title');
-        popupTitle.textContent = this.name;
+        popupTitle.textContent = hero.name;
         
         popupContent.appendChild(popupTitle);
         popupContent.appendChild(superheroInfo);
         popupContent.appendChild(popupClose);
         
         //открываем модальное окно
-        superheroLink.addEventListener('click', function (){
+        superheroLink.addEventListener('click', function (e){
             popup.style.display = 'block';
+            e.preventDefault();
         });
 
         //закрываем модальное окно
-        popupClose.addEventListener('click', function () {
+        popupClose.addEventListener('click', function (e) {
             popup.style.display = 'none';
+            e.preventDefault();
         });
-                    
-        return card;
+
+        root.appendChild(card);
+    });
+
+     // собираем массив всех звездочек на странице
+let allStars = document.querySelectorAll('.rating__star');
+let allStarsArray = Array.from(allStars);
+
+
+// проходимся по звездочкм циклом и выводим инфо в формате "имя героя: оценка"
+for (let i=0; i< allStarsArray.length; i++) {
+    allStarsArray[i].addEventListener('click', function () {
+        console.log(`${allStarsArray[i].parentElement.parentElement.querySelector('.superhero__name').textContent}: ${allStarsArray[i].getAttribute('value')}`);
+        localStorage.setItem(allStarsArray[i].parentElement.parentElement.querySelector('.superhero__name').textContent , allStarsArray[i].getAttribute('value'));
+    }); 
+}
+
+// Делаем звезды активными для каждого героя
+let heroElements = document.querySelectorAll('.superhero__card');
+let heroElementArray = Array.from(heroElements);
+for (let item of heroElementArray) {
+    let heroRating = item.querySelectorAll('.rating');
+    let heroRatingArray = Array.from(heroRating); // массив рейтингов
+    let heroStars = item.querySelectorAll('.rating__star');
+    let heroStarsArray = Array.from(heroStars);// массив со звездами для каждого героя
+    for (let i=0; i<heroStarsArray.length; i++) {
+
+
+        // функция выбора всех предыдущих соседей
+        function getPreviousSiblings(elem, filter) {
+            let sibs = [];
+            while (elem = elem.previousSibling) {
+                if (elem.nodeType === 3) continue; // text node
+                if (!filter || filter(elem)) sibs.push(elem);
+            }
+            return sibs;
+        }
+
+        // функция выбора всех последующих соседей
+        function getNextSiblings(elem, filter) {
+            let sibs = [];
+            while (elem = elem.nextSibling) {
+                if (elem.nodeType === 3) continue; // text node
+                if (!filter || filter(elem)) sibs.push(elem);
+            }
+            return sibs;
+        }
+
+// фильтр для функции выбора предшествующих и последующих соседей
+        function exampleFilter(elem) {
+if (elem.classList.contains('rating__star')) {
+    return elem.previousSibling;
+            }}
+
+// обработчик на событие click
+        heroStarsArray[i].addEventListener('click', function () {
+            let prevSiblings = getPreviousSiblings(heroStarsArray[i],exampleFilter);
+            let nextSiblings = getNextSiblings(heroStarsArray[i],exampleFilter);
+            heroStarsArray[i].classList.add('active');
+            heroStarsArray[0].classList.add('active');
+            for (star of prevSiblings) {
+                star.classList.add('active');
+            }
+
+            for (star of nextSiblings) {
+                star.classList.remove('active');
+            }
+        
+        });
+
+
+// обработчик на событие mouseover
+        heroStarsArray[i].addEventListener('mouseover', function () {
+            let prevSiblings = getPreviousSiblings(heroStarsArray[i],exampleFilter);
+            heroStarsArray[i].classList.add('focus');
+            heroStarsArray[0].classList.add('focus');
+            for (star of prevSiblings) {
+                star.classList.add('focus');
+            }
+        });
+
+    // обработчик на событие mouseout
+        heroStarsArray[i].addEventListener('mouseout', function () {
+            let prevSiblings =getPreviousSiblings(heroStarsArray[i],exampleFilter);
+            heroStarsArray[i].classList.remove('focus');
+            heroStarsArray[0].classList.remove('focus');
+            for (star of prevSiblings) {
+                star.classList.remove('focus');
+            }
+        });
     }
 }
+});
 
-for (let i = 0; i < infoObj.length; i++) {
-    const superhero = new Superhero(
-        info[i].name,
-        info[i].universe,
-        info[i].alterego,
-        info[i].occupation,
-        info[i].friends,
-        info[i].superpowers,
-        info[i].url,
-        info[i].info,
-        info[i].icon
-    );
+
+
+
+
+
+// class Superhero {
+//     constructor(name, universe, alterego, occupation, friends, superpowers, url, info, icon) {
+//         this.name = name;
+//         this.universe = universe;
+//         this.alterego = alterego;
+//         this.occupation = occupation;
+//         this.friends = friends;
+//         this.superpowers = superpowers;
+//         this.url = url;
+//         this.info = info;
+//         this.icon = icon;
+
+            //Здесь была функция добавления карточки супергероя
+//     }
+
+
+// for (let i = 0; i < infoObj.length; i++) {
+//     const superhero = new Superhero(
+//         info[i].name,
+//         info[i].universe,
+//         info[i].alterego,
+//         info[i].occupation,
+//         info[i].friends,
+//         info[i].superpowers,
+//         info[i].url,
+//         info[i].info,
+//         info[i].icon
+//     );
     
-    const card = superhero.createCard();
-    root.appendChild(card);
-}
-
-//  //Модальное окно
-        
-// for (let i = 0; i < popupLinks.length; i++) {
-//     const popupLink = popupLinks[i];
-//     superheroLink.addEventListener('click', function (){
-//         popup.style.display = 'block';
-//     });
-    
-// } 
-
-// for (let i = 0; i < closeButtons.length; i++) {
-//     const closeButton = closeButtons[i];
-//     closeButton.addEventListener('click', function () {
-//         popup.style.display = 'none';
-// });
+//     const card = superhero.createCard();
+//     root.appendChild(card);
 // }
 
-// popupLinks.forEach(link => {
-    //     link.addEventListener('click', () => {
-    //         popup.style.display = 'block';
-    //     });
-    // });
+
+
 
 
 
